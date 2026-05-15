@@ -102,6 +102,13 @@ for index, row in df.iterrows():
             if key == "pages":
                 pages = re.findall(r"(\d+)", value)
                 value = "--".join(pages)
+            if key == "title":
+                if value[:1] != "{":
+                    value = "{" + value + "}"
+                #  clean off too many parentheses - assumes balanced
+                while value[:2] == "{{":
+                    value = value.removeprefix("{").removesuffix("}")
+
             clean_fields[key] = value
 
         if note_value and "note" not in existing_keys:
