@@ -46,6 +46,30 @@ If a value itself contains a comma, enclose it in double quotation marks. For ex
 
 The csv file has a column named note. Add either option "in press" or "preprint" to this column.
 
+### Errors in `fetch_bib.py`
+
+`fetch_bib.py` will print warnings and continue if it encounters any of these three problems:
+
+#### 1. Duplicate DOI
+The same DOI or bib key appears more than once in the CSV. The first occurrence is kept, subsequent ones are skipped.
+```
+⚠️ Skipping duplicate DOI: 10.1111/jbi.15066 (CSV line 250)
+```
+
+#### 2. Incorrect bib key
+A CSV entry doesn't start with `10.` (so it's treated as a bib key) but no matching entry exists in `bib_no_doi.bib`. Fix by either adding the entry to `bib_no_doi.bib` or correcting the key in the CSV.
+```
+❗ No bib entry found for key: Gonzalez_Orozco_et_al_2026_SysBot (CSV line 278)
+```
+
+#### 3. DOI not found
+A valid DOI (starting with `10.`) was not found on CrossRef — either the DOI is wrong or the paper hasn't been registered yet. Fix by correcting the DOI or commenting the line out with `#` until it's available.
+```
+❗ Failed to retrieve BibTeX for 10.22201/20078706e.2026.97 (CSV line 42): 404 Client Error
+```
+
+A summary of all failures is printed at the end of the script.
+
 ### What happens if CICD Automation fails
 
 There is two options to this:
