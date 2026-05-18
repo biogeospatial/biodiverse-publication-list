@@ -9,6 +9,7 @@ on:
       - "fetch_bib.py"
       - "build_qmd.py"
       - "publication-list.qmd"
+      - "index.qmd"
       - "global-ecology-and-biogeography.csl"
       - ".github/workflows/render-publications.yml"
   workflow_dispatch: {}
