@@ -105,7 +105,7 @@ for index, row in df.iterrows():
             if key == "title":
                 if value[:1] != "{":
                     value = "{" + value + "}"
-                #  clean off too many parentheses - assumes balanced
+                #  clean off excess parentheses - assumes balanced
                 while value[:2] == "{{":
                     value = value.removeprefix("{").removesuffix("}")
 
