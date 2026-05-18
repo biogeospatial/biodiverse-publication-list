@@ -20,7 +20,7 @@ if "doi" not in df.columns:
     print("The CSV file must have a 'doi' column.")
     exit(1)
 
-df = df[~df['doi'].str.startswith('#')]
+df = df[~df["doi"].str.startswith("#")]
 
 with open("bib_no_doi.bib") as bibtex_file:
     bib_database = bibtexparser.load(bibtex_file)
@@ -44,6 +44,9 @@ doi_url_base = "https://doi.org/"
 bibtex_entries = []
 entry_ids = []
 curr_progress_count = 0
+seen_dois = set()
+duplicate_list = []
+failed_doi_list = []
 
 for index, row in df.iterrows():
     doi = str(row["doi"]).strip()
@@ -57,6 +60,12 @@ for index, row in df.iterrows():
     if doi.startswith("#"):
         curr_progress_count += 1
         continue
+
+    if doi in seen_dois:
+        duplicate_list.append((doi, index + 2))
+        print(f"⚠️  Skipping duplicate DOI: {doi} (CSV line {index + 2}) ⚠️")
+        continue
+    seen_dois.add(doi)
 
     if note_value.startswith("#"):
         note_value = ""
@@ -82,6 +91,10 @@ for index, row in df.iterrows():
             b = bibtexparser.loads(raw_entry)
             fields = b.entries[0]
         else:
+            if doi not in bib_dict:
+                failed_doi_list.append((doi, index + 2))
+                print(f"❗ No bib entry found for key: {doi} (CSV line {index + 2}) ❗")
+                continue
             fields = bib_dict[doi]
 
         entry_type = fields["ENTRYTYPE"]
@@ -125,7 +138,8 @@ for index, row in df.iterrows():
         print(f"✅ Processed DOI {doi} [{curr_progress_count}/{len(dois)}]")
 
     except requests.exceptions.RequestException as e:
-        print(f"⚠️ Failed to retrieve BibTeX for {doi}: {e}")
+        failed_doi_list.append((doi, index + 2))
+        print(f"❗ Failed to retrieve BibTeX for {doi} (CSV line {index + 2}): {e}")
 
 with open(OUTPUT_BIB, "w", encoding="utf-8") as bibfile:
     for entry in bibtex_entries:
@@ -139,3 +153,13 @@ with open(OUTPUT_BIB, "r", encoding="utf-8") as bibfile:
 num_entries = len(bib_database.entries)
 print(f"The number of entries in {OUTPUT_BIB}: {num_entries}")
 print(f"The number of DOIs processed: {len(dois)}")
+
+if duplicate_list:
+    print(f"\nThe number of duplicate DOIs skipped: {len(duplicate_list)}")
+    for doi, line in duplicate_list:
+        print(f"  line {line}: {doi}")
+
+if failed_doi_list:
+    print(f"\nThe number of failed DOIs: {len(failed_doi_list)}")
+    for doi, line in failed_doi_list:
+        print(f"  line {line}: {doi}")
