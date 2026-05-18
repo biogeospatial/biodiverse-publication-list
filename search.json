@@ -44,7 +44,7 @@
     "href": "index.html#source-code",
     "title": "Biodiverse publications",
     "section": "Source code",
-    "text": "Source code\nThis site is generated automatically using code and data at https://github.com/biogeospatial/biodiverse-publication-list\nCode contributions have been made by Fonti Kar and Ryan Gian.",
+    "text": "Source code\nThis site is generated automatically using code and data available through https://github.com/biogeospatial/biodiverse-publication-list.\nCode contributions have been made by Fonti Kar and Ryan Gian.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Overview</span>"
     ]
