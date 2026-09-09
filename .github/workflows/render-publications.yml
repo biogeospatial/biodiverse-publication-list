@@ -43,7 +43,8 @@ jobs:
       - name: Install dependencies
         run: |
           pip install --upgrade pip
-          pip install mistune pandas bibtexparser requests PyYAML
+          pip install mistune pandas requests PyYAML
+          pip install bibtexparser~=1.0
 
         
       - name: install pandoc
