@@ -11,6 +11,7 @@ book:
   - pdf
   output-file: Biodiverse-publications
   title: Biodiverse publications
+  date-format: iso
 editor: source
 format:
   html:
