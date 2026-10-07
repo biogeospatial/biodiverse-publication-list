@@ -12,17 +12,21 @@ book:
   output-file: Biodiverse-publications
   title: Biodiverse publications
   date-format: iso
+  repo-url: https://github.com/biogeospatial/biodiverse-publication-list
 editor: source
 format:
   html:
     link-external-newwindow: true
     number-sections: false
     theme: zephyr
+    toc-title: "Page contents"
   pdf:
     number-depth: 2
     number-sections: false
     toc: true
     toc-depth: 3
+    papersize: a4
+    
 project:
   output-dir: docs
   type: book
