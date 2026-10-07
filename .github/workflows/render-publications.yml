@@ -12,6 +12,7 @@ on:
       - "index.qmd"
       - "global-ecology-and-biogeography.csl"
       - ".github/workflows/render-publications.yml"
+      - "_quarto_yml.txt"
   workflow_dispatch: {}
 
 permissions:
